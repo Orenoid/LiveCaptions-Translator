@@ -1,0 +1,81 @@
+ # LiveCaptions Translator 项目概览
+
+## 项目简介
+LiveCaptions Translator 是一个基于 Windows LiveCaptions 的实时语音翻译工具，它可以将 Windows 系统的实时字幕功能与翻译 API 集成，实现实时的语音转文字和翻译功能。
+
+## 核心功能
+- 自动调用 Windows LiveCaptions 而无需打开两个窗口
+- 支持多种翻译 API（Ollama、OpenAI、Google Translate）
+- 实时翻译显示
+- 翻译历史记录
+- 支持暂停翻译和窗口置顶
+- 支持明暗主题自动切换
+
+## 模块结构
+
+### 1. UI 层
+- `MainWindow.xaml/cs`: 主窗口界面，包含导航栏和基本控制按钮
+- `CaptionPage.xaml/cs`: 显示原文和翻译文本的主页面
+- `SettingPage.xaml/cs`: 设置页面，用于配置翻译 API 和其他选项
+- `HistoryPage.xaml/cs`: 显示翻译历史记录的页面
+
+### 2. 模型层 (models/)
+- `Caption.cs`: 管理字幕捕获和翻译状态的核心类
+- `Setting.cs`: 管理应用程序设置的类
+- `TranslateAPI.cs`: 实现各种翻译 API 接口的类
+- `TranslateAPIConfig.cs`: 各翻译 API 的配置类
+- `LiveCaptionsHandler.cs`: 处理 Windows LiveCaptions 的启动和控制
+- `WindowsAPI.cs`: Windows API 调用封装
+
+### 3. 控制器层 (controllers/)
+- `TranslationController.cs`: 处理翻译逻辑和历史记录的控制器
+
+### 4. 数据存储
+- 使用 SQLite 存储翻译历史记录
+- 使用 JSON 文件存储应用程序设置
+
+## 关键文件说明
+
+### 配置文件
+- `LiveCaptionsTranslator.csproj`: 项目配置文件
+- `App.xaml/cs`: 应用程序入口和全局状态管理
+
+### 核心功能实现
+- `Caption.cs`: 
+  - 实现字幕捕获的核心逻辑
+  - 管理翻译状态和标志
+  - 实现字幕同步和翻译触发
+
+- `TranslateAPI.cs`:
+  - 实现各种翻译 API 的调用
+  - 处理翻译请求和响应
+  - 错误处理和重试逻辑
+
+- `LiveCaptionsHandler.cs`:
+  - 管理 Windows LiveCaptions 进程
+  - 实现窗口查找和控制
+  - 处理自动化元素的查找和操作
+
+## 开发注意事项
+
+### 1. 依赖项
+- WPF-UI: 用于现代化的 UI 界面
+- System.Data.SQLite: 数据存储
+- Interop.UIAutomationClient: Windows 自动化操作
+
+### 2. 关键流程
+- 字幕捕获 -> 文本处理 -> API 翻译 -> UI 显示
+- 设置更改 -> JSON 保存 -> 实时生效
+- 翻译完成 -> 历史记录保存 -> 历史页面更新
+
+### 3. 扩展建议
+- 添加新的翻译 API 时需要：
+  1. 在 `TranslateAPIConfig.cs` 中添加新的配置类
+  2. 在 `TranslateAPI.cs` 中实现新的翻译方法
+  3. 在 `Setting.cs` 中注册新的 API 配置
+  4. 在 `SettingPage.xaml` 中添加对应的设置界面
+
+### 4. 性能考虑
+- 使用异步操作处理翻译请求
+- 设置合理的翻译间隔避免频繁请求
+- 注意内存管理和资源释放

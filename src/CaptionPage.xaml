@@ -33,7 +33,8 @@
                 Text="{Binding Original, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
                 Background="Transparent"
-                BorderThickness="0" />
+                BorderThickness="0"
+                TextWrapping="Wrap" />
         </ui:Card>
         <ui:Card
             Grid.Row="1"
@@ -46,7 +47,8 @@
                 Text="{Binding Translated, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
                 Background="Transparent"
-                BorderThickness="0" />
+                BorderThickness="0"
+                TextWrapping="Wrap" />
         </ui:Card>
     </Grid>
 </Page>
