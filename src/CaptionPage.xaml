@@ -27,28 +27,36 @@
             Margin="15,3,20,1"
             Padding="8"
             VerticalAlignment="Stretch">
-            <TextBox
-                x:Name="OriginalCaption"
-                FontSize="15"
-                Text="{Binding Original, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                Background="Transparent"
-                BorderThickness="0"
-                TextWrapping="Wrap" />
+            <ScrollViewer x:Name="OriginalScroll" 
+                         ScrollChanged="ScrollViewer_ScrollChanged"
+                         VerticalScrollBarVisibility="Auto">
+                <TextBox
+                    x:Name="OriginalCaption"
+                    FontSize="15"
+                    Text="{Binding Original, UpdateSourceTrigger=PropertyChanged}"
+                    IsReadOnly="True"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
         </ui:Card>
         <ui:Card
             Grid.Row="1"
             Margin="15,1,20,3"
             Padding="8"
             VerticalAlignment="Stretch">
-            <TextBox
-                x:Name="TranslatedCaption"
-                FontSize="18"
-                Text="{Binding Translated, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                Background="Transparent"
-                BorderThickness="0"
-                TextWrapping="Wrap" />
+            <ScrollViewer x:Name="TranslatedScroll"
+                         ScrollChanged="ScrollViewer_ScrollChanged"
+                         VerticalScrollBarVisibility="Auto">
+                <TextBox
+                    x:Name="TranslatedCaption"
+                    FontSize="18"
+                    Text="{Binding Translated, UpdateSourceTrigger=PropertyChanged}"
+                    IsReadOnly="True"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
         </ui:Card>
     </Grid>
 </Page>

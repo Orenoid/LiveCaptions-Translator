@@ -17,6 +17,8 @@ namespace LiveCaptionsTranslator.models
 
         private string original = "";
         private string translated = "";
+        private StringBuilder originalBuilder = new StringBuilder();
+        private StringBuilder translatedBuilder = new StringBuilder();
 
         public bool PauseFlag { get; set; } = false;
         public bool TranslateFlag { get; set; } = false;
@@ -28,6 +30,11 @@ namespace LiveCaptionsTranslator.models
             set
             {
                 original = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    originalBuilder.AppendLine(value);
+                    original = originalBuilder.ToString();
+                }
                 OnPropertyChanged("Original");
             }
         }
@@ -37,6 +44,11 @@ namespace LiveCaptionsTranslator.models
             set
             {
                 translated = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    translatedBuilder.AppendLine(value);
+                    translated = translatedBuilder.ToString();
+                }
                 OnPropertyChanged("Translated");
             }
         }
