@@ -2,6 +2,7 @@
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Collections.Specialized;
 
 namespace LiveCaptionsTranslator
 {
@@ -11,28 +12,37 @@ namespace LiveCaptionsTranslator
         {
             InitializeComponent();
             DataContext = App.Captions;
-            App.Captions.PropertyChanged += TranslatedChanged;
+            App.Captions.Captions.CollectionChanged += Captions_CollectionChanged;
         }
 
-        private void TranslatedChanged(object sender, PropertyChangedEventArgs e)
+        private void Captions_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(App.Captions.Translated))
+            if (App.Captions.Captions.Count == 0) return;
+
+            var lastItem = CaptionList.Items[^1];
+            var container = CaptionList.ItemContainerGenerator.ContainerFromItem(lastItem) as ListBoxItem;
+            if (container == null) return;
+
+            var textBlock = container.ContentTemplate.FindName("CaptionText", container) as TextBlock;
+            if (textBlock == null) return;
+
+            if (Encoding.UTF8.GetByteCount(lastItem.ToString() ?? "") > 150)
             {
-                if (Encoding.UTF8.GetByteCount(App.Captions.Translated) > 150)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        TranslatedCaption.FontSize = 15;
-                    }), DispatcherPriority.Background);
-                } 
-                else
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        TranslatedCaption.FontSize = 18;
-                    }), DispatcherPriority.Background);
-                }
+                    textBlock.FontSize = 13;
+                }), DispatcherPriority.Background);
             }
+            else
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    textBlock.FontSize = 15;
+                }), DispatcherPriority.Background);
+            }
+
+            // 自动滚动到最后一项
+            CaptionList.ScrollIntoView(lastItem);
         }
     }
 }
